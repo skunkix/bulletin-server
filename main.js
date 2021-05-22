@@ -10,6 +10,12 @@ app.post('/getImages', (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Running express at ${hostname}:${port}`);
-})
+http.createServer((req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.write('Hello World!');
+  res.end();
+}).listen(port);
+
+// app.listen(port, () => {
+//   console.log(`Running express at ${hostname}:${port}`);
+// })
