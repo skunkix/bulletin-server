@@ -8,13 +8,9 @@ const port = process.env.PORT || 3000;
 var whitelist = ['http://localhost:8080'];
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
+  origin: (origin, callback) => whitelist.indexOf(origin) !== -1 ? 
+    callback(null, true) : 
+    callback(null, false)
 };
 
 app.post('/getImages', cors(corsOptions), (req, res) => {
