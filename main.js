@@ -5,9 +5,9 @@ const cors = require("cors");
 const hostname = '127.0.0.1';
 const port = process.env.PORT || 3000;
 
-var whitelist = ['http://localhost:3000'];
+var whitelist = ['http://localhost:8080'];
 
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
@@ -15,9 +15,9 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'))
     }
   }
-}));
+};
 
-app.post('/getImages', (req, res) => {
+app.post('/getImages', cors(corsOptions), (req, res) => {
   res.send({
     heresSome: "jsonForYa"
   });
