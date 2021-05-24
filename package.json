@@ -4,7 +4,8 @@
   "description": "A virtual bulletin board where you can add images and gifs that everyone can see!",
   "main": "main.js",
   "scripts": {
-    "start": "npm run build && node js/main.js",
+    "dev": "npm run build && npm run start",
+    "start": "node js/main.js",
     "build": "npx tsc --project tsconfig.json",
     "test": "jest",
     "push": "git push && git push heroku main"
