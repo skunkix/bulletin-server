@@ -13,8 +13,33 @@ export class RequestFulfiller {
     }
 
     addImage(req: express.Request, res: express.Response): void {
-        this.repo.addImage(req.body);
-
+        const body = req.body;
+        if (!typesAllMatch([
+            { a: body.url, b: 'string' },
+            { a: body.width, b: 'number' },
+            { a: body.x, b: 'number' },
+            { a: body.y, b: 'number' },
+        ])) {
+            return invalidRequest(res);
+        }
+        
+        this.repo.addImage(body);
         res.end();
     }
+}
+
+type FieldType = 'number' | 'string';
+type TypePair = {
+    a: any,
+    b: FieldType
+};
+type TypePairs = TypePair[]
+
+function typesAllMatch(pairs: TypePairs): boolean {
+    return !pairs.some(pair => pair.a === undefined || typeof pair.a !== pair.b);
+}
+
+function invalidRequest(res: express.Response): void {
+    res.status(400);
+    res.end();
 }
