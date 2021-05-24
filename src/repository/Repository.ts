@@ -2,11 +2,13 @@ import { IImage } from "../types/IImage";
 import { IRepository } from "../types/IRepository";
 
 export class Repository implements IRepository {
+    private images: IImage[] = [];
+
     getImages(startTime: number): IImage[] {
-        return [];
+        return this.images;
     }
 
     addImage(img: IImage): void {
-        return;
+        this.images.push(img);
     }
 }

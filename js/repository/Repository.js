@@ -3,12 +3,13 @@ exports.__esModule = true;
 exports.Repository = void 0;
 var Repository = (function () {
     function Repository() {
+        this.images = [];
     }
     Repository.prototype.getImages = function (startTime) {
-        return [];
+        return this.images;
     };
     Repository.prototype.addImage = function (img) {
-        return;
+        this.images.push(img);
     };
     return Repository;
 }());
