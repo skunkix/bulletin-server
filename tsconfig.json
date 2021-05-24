@@ -1,10 +1,10 @@
 {
     "compilerOptions": {
-      "module": "amd",
+      "module": "commonjs",
       "removeComments": true,
       "preserveConstEnums": true,
       "sourceMap": true,
-      "outFile": "./js/main.js"
+      "outDir": "./js"
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules", "**/*.spec.ts"]
