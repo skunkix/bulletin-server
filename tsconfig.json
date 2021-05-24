@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "module": "amd",
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "sourceMap": true,
+      "outFile": "./js/main.js"
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules", "**/*.spec.ts"]
+}

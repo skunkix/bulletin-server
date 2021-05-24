@@ -4,7 +4,8 @@
   "description": "A virtual bulletin board where you can add images and gifs that everyone can see!",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js",
+    "start": "npm run build && node js/main.js",
+    "build": "npx tsc --project tsconfig.json",
     "test": "jest",
     "push": "git push && git push heroku main"
   },
@@ -20,6 +21,10 @@
   "homepage": "https://github.com/skunkix/bulletin-server#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "typescript": "^4.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^15.6.0"
   }
 }
