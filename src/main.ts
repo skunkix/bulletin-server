@@ -1,5 +1,6 @@
 import * as express from 'express';
-import { getImages } from './network/api';
+import { RequestFulfiller } from './fulfiller/Fulfiller';
+import { Repository } from './repository/Repository';
 const cors = require("cors");
 
 const app = express();
@@ -17,7 +18,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.post('/getImages', getImages);
+const repo = new Repository();
+const fulfiller = new RequestFulfiller(repo);
+
+app.post('/getImages', fulfiller.getImages);
+app.post('/addImage', fulfiller.addImage);
 
 app.listen(port, () => {
   console.log(`Running express at ${hostname}:${port}`);
