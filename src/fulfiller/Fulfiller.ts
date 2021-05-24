@@ -3,12 +3,13 @@ import * as express from 'express';
 import { IRepository } from "../types/IRepository";
 
 export class RequestFulfiller {
-    constructor(private repo: IRepository) {}
+    constructor(private repo: IRepository, private date = Date) {}
 
     getImages(req: express.Request, res: express.Response): void {
         const images = this.repo.getImages(0);
         res.send({
-            images
+            images,
+            timestamp: this.date.now()
         });
     }
 
@@ -23,7 +24,7 @@ export class RequestFulfiller {
             return invalidRequest(res);
         }
         
-        this.repo.addImage(body);
+        this.repo.addImage({ ...body, timestamp: this.date.now() });
         res.end();
     }
 }

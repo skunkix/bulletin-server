@@ -6,6 +6,7 @@ describe("Fulfiller of API requests", () => {
     let mockRepo;
     let res;
     let fulfiller;
+    let date;
 
     beforeEach(() => {
         mockRepo = {
@@ -13,7 +14,8 @@ describe("Fulfiller of API requests", () => {
             addImage: jest.fn()
         };
         res = { end: jest.fn(), status: jest.fn() };
-        fulfiller = new RequestFulfiller(mockRepo);
+        date = { now: () => Date.now() }
+        fulfiller = new RequestFulfiller(mockRepo, date);
     })
     
     it("should add valid image to repo and end request", () => {
@@ -28,7 +30,7 @@ describe("Fulfiller of API requests", () => {
 
         fulfiller.addImage(req, res);
         
-        expect(mockRepo.addImage).toHaveBeenCalledWith(req.body);
+        expect(mockRepo.addImage).toHaveBeenCalledWith({ ...req.body, timestamp: date.now() });
         expect(res.end).toHaveBeenCalled();
     });
 
