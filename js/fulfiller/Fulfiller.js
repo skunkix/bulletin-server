@@ -12,6 +12,8 @@ var RequestFulfiller = (function () {
         });
     };
     RequestFulfiller.prototype.addImage = function (req, res) {
+        console.log(req.body);
+        res.end();
     };
     return RequestFulfiller;
 }());

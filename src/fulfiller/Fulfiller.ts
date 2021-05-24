@@ -1,3 +1,4 @@
+import { resolveSoa } from 'dns';
 import * as express from 'express';
 import { IRepository } from "../types/IRepository";
 
@@ -11,7 +12,9 @@ export class RequestFulfiller {
         });
     }
 
-    addImage(req: Express.Request, res: Express.Response): void {
+    addImage(req: express.Request, res: express.Response): void {
+        this.repo.addImage(req.body);
 
+        res.end();
     }
 }

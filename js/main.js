@@ -14,6 +14,7 @@ var corsOptions = {
     origin: '*'
 };
 app.use(cors(corsOptions));
+app.use(express.json());
 var repo = config_1.useMockResponses ? new MockRepository_1.MockRepository : new Repository_1.Repository();
 var fulfiller = new Fulfiller_1.RequestFulfiller(repo);
 app.post('/getImages', fulfiller.getImages.bind(fulfiller));

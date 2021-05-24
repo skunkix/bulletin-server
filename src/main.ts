@@ -19,6 +19,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(express.json());
 
 const repo = useMockResponses ? new MockRepository : new Repository();
 const fulfiller = new RequestFulfiller(repo);
