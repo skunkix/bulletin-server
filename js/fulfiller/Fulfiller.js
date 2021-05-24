@@ -6,8 +6,9 @@ var RequestFulfiller = (function () {
         this.repo = repo;
     }
     RequestFulfiller.prototype.getImages = function (req, res) {
+        var images = this.repo.getImages(0);
         res.send({
-            heresSome: "jsonForYas"
+            images: images
         });
     };
     RequestFulfiller.prototype.addImage = function (req, res) {
