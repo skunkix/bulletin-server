@@ -1,5 +1,5 @@
 "use strict";
 exports.__esModule = true;
 exports.useMockResponses = void 0;
-exports.useMockResponses = false;
+exports.useMockResponses = true;
 //# sourceMappingURL=config.js.map
