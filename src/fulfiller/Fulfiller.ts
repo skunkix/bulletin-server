@@ -6,26 +6,42 @@ export class RequestFulfiller {
     constructor(private repo: IRepository, private date = Date) {}
 
     getImages(req: express.Request, res: express.Response): void {
-        const images = this.repo.getImages(0);
-        res.send({
-            images,
-            timestamp: this.date.now()
-        });
+        try {
+            const body = req.body;
+            if (!typesAllMatch([
+                { a: body.boardId, b: 'string' },
+                { a: body.startTimestamp, b: 'number' }
+            ])) {
+                return invalidRequest(res);
+            }
+    
+            const images = this.repo.getImages(0);
+            res.send({
+                images,
+                timestamp: this.date.now()
+            });
+        } catch(err) {
+            return invalidRequest(res);
+        }
     }
 
     addImage(req: express.Request, res: express.Response): void {
-        const body = req.body;
-        if (!typesAllMatch([
-            { a: body.url, b: 'string' },
-            { a: body.width, b: 'number' },
-            { a: body.x, b: 'number' },
-            { a: body.y, b: 'number' },
-        ])) {
+        try {
+            const body = req.body;
+            if (!typesAllMatch([
+                { a: body.url, b: 'string' },
+                { a: body.width, b: 'number' },
+                { a: body.x, b: 'number' },
+                { a: body.y, b: 'number' },
+            ])) {
+                return invalidRequest(res);
+            }
+            
+            this.repo.addImage({ ...body, timestamp: this.date.now() });
+            res.end();
+        } catch(err) {
             return invalidRequest(res);
         }
-        
-        this.repo.addImage({ ...body, timestamp: this.date.now() });
-        res.end();
     }
 }
 

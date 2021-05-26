@@ -13,34 +13,73 @@ describe("Fulfiller of API requests", () => {
             getImages: jest.fn(),
             addImage: jest.fn()
         };
-        res = { end: jest.fn(), status: jest.fn() };
-        date = { now: () => Date.now() }
+        res = { end: jest.fn(), status: jest.fn(), send: jest.fn() };
+        const now = Date.now();
+        date = { now: () => now }
         fulfiller = new RequestFulfiller(mockRepo, date);
     })
-    
-    it("should add valid image to repo and end request", () => {
-        const req = {
+
+    describe("getImages", () => {
+        const makeReq = (boardId, startTimestamp) => ({
             body: {
-                url: "https://media0.giphy.com/media/q15EjVC1dBbOM/giphy.gif",
-                width: 200,
-                x: 10,
-                y: 200
+                boardId,
+                startTimestamp
             }
-        };
+        });
 
-        fulfiller.addImage(req, res);
-        
-        expect(mockRepo.addImage).toHaveBeenCalledWith({ ...req.body, timestamp: date.now() });
-        expect(res.end).toHaveBeenCalled();
-    });
+        it("should respond with 400 error if request is not valid", () => {
+            const reqs = [
+                fulfiller.getImages({}, res),
+                fulfiller.getImages(makeReq(), res),
+                fulfiller.getImages(makeReq(3, 1), res),
+                fulfiller.getImages(makeReq("3", "1"), res),
+                fulfiller.getImages(makeReq(undefined, 4), res),
+                fulfiller.getImages(makeReq("1", undefined), res),
+            ];
 
-    it("should not add an image if a required field is missing or the wrong type", () => {
-        fulfiller.addImage({ body: { width: 200, x: 10, y: 10 }}, res);
-        fulfiller.addImage({ body: { url: "url", x: 10, y: 10 }}, res);
-        fulfiller.addImage({ body: { url: "url", width: 200, y: 10 }}, res);
-        fulfiller.addImage({ body: { url: "url", width: 200, x: 10 }}, res);
-        
-        expect(mockRepo.addImage).not.toHaveBeenCalled();
-        expect(res.status).toHaveBeenCalledTimes(4);
+            expect(res.status).toHaveBeenCalledTimes(reqs.length);
+            expect(res.end).toHaveBeenCalledTimes(reqs.length);
+        });
+
+        it("should get images from repo and send them if request is valid", () => {
+            const images = ["1", "2", "3"];
+            mockRepo.getImages.mockReturnValue(images);
+
+            fulfiller.getImages(makeReq("board-1", 500000), res);
+
+            expect(res.send).toHaveBeenCalledWith({
+                images: images,
+                timestamp: date.now()
+            });
+        });
     });
+    
+    describe("addImage", () => {
+        it("should add valid image to repo and end request", () => {
+            const req = {
+                body: {
+                    url: "https://media0.giphy.com/media/q15EjVC1dBbOM/giphy.gif",
+                    width: 200,
+                    x: 10,
+                    y: 200
+                }
+            };
+    
+            fulfiller.addImage(req, res);
+            
+            expect(mockRepo.addImage).toHaveBeenCalledWith({ ...req.body, timestamp: date.now() });
+            expect(res.end).toHaveBeenCalled();
+        });
+    
+        it("should not add an image if a required field is missing or the wrong type", () => {
+            fulfiller.addImage({ body: { width: 200, x: 10, y: 10 }}, res);
+            fulfiller.addImage({ body: { url: "url", x: 10, y: 10 }}, res);
+            fulfiller.addImage({ body: { url: "url", width: 200, y: 10 }}, res);
+            fulfiller.addImage({ body: { url: "url", width: 200, x: 10 }}, res);
+            
+            expect(mockRepo.addImage).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledTimes(4);
+        });
+    })
+    
 });
