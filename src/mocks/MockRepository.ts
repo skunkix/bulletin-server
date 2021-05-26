@@ -2,11 +2,11 @@ import { IImage } from "../types/IImage";
 import { IRepository } from "../types/IRepository";
 
 export class MockRepository implements IRepository {
-    getImages(startTime: number): IImage[] {
+    getImages(boardId: string, startTime: number): IImage[] {
         return getImagesMock;
     }
 
-    addImage(img: IImage): void {
+    addImage(boardId: string, img: IImage): void {
         return;
     }
 }

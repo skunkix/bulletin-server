@@ -15,7 +15,7 @@ export class RequestFulfiller {
                 return invalidRequest(res);
             }
     
-            const images = this.repo.getImages(0);
+            const images = this.repo.getImages(body.boardId, body.startTimestamp);
             res.send({
                 images,
                 timestamp: this.date.now()
@@ -29,6 +29,7 @@ export class RequestFulfiller {
         try {
             const body = req.body;
             if (!typesAllMatch([
+                { a: body.boardId, b: 'string' },
                 { a: body.url, b: 'string' },
                 { a: body.width, b: 'number' },
                 { a: body.x, b: 'number' },
@@ -37,7 +38,7 @@ export class RequestFulfiller {
                 return invalidRequest(res);
             }
             
-            this.repo.addImage({ ...body, timestamp: this.date.now() });
+            this.repo.addImage(body.boardId, { ...body, timestamp: this.date.now() });
             res.end();
         } catch(err) {
             return invalidRequest(res);

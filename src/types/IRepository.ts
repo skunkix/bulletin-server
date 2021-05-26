@@ -1,6 +1,6 @@
 import { IImage } from "./IImage";
 
 export interface IRepository {
-    getImages: (startTime: number) => IImage[],
-    addImage: (img: IImage) => void
+    getImages: (boardId: string, startTime: number) => IImage[],
+    addImage: (boardId: string, img: IImage) => void
 }

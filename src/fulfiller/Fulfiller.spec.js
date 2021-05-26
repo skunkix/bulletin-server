@@ -47,6 +47,7 @@ describe("Fulfiller of API requests", () => {
 
             fulfiller.getImages(makeReq("board-1", 500000), res);
 
+            expect(mockRepo.getImages).toHaveBeenCalledWith("board-1", 500000);
             expect(res.send).toHaveBeenCalledWith({
                 images: images,
                 timestamp: date.now()
@@ -58,6 +59,7 @@ describe("Fulfiller of API requests", () => {
         it("should add valid image to repo and end request", () => {
             const req = {
                 body: {
+                    boardId: "3",
                     url: "https://media0.giphy.com/media/q15EjVC1dBbOM/giphy.gif",
                     width: 200,
                     x: 10,
@@ -67,7 +69,7 @@ describe("Fulfiller of API requests", () => {
     
             fulfiller.addImage(req, res);
             
-            expect(mockRepo.addImage).toHaveBeenCalledWith({ ...req.body, timestamp: date.now() });
+            expect(mockRepo.addImage).toHaveBeenCalledWith("3", { ...req.body, timestamp: date.now() });
             expect(res.end).toHaveBeenCalled();
         });
     
