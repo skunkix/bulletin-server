@@ -8,7 +8,7 @@ type Board = {
 export class Repository implements IRepository {
     private boards: { [state: string]: Board } = {};
 
-    constructor() {
+    constructor(private boardImageLimit: number) {
         this.addBoard("0");
     }
 
@@ -19,6 +19,9 @@ export class Repository implements IRepository {
 
     addImage(boardId: string, img: IImage): void {
         this.assertBoardExistence(boardId);
+        if (this.boards[boardId].images.length === this.boardImageLimit) {
+            this.boards[boardId].images = this.boards[boardId].images.slice(1);
+        }
         this.boards[boardId].images.push(img);
     }
 

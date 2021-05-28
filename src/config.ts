@@ -1,1 +1,2 @@
-export const useMockResponses = true;
+export const useMockResponses = false;
+export const boardImageLimit = 10;

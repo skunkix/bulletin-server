@@ -4,10 +4,10 @@ exports.MockRepository = void 0;
 var MockRepository = (function () {
     function MockRepository() {
     }
-    MockRepository.prototype.getImages = function (startTime) {
+    MockRepository.prototype.getImages = function (boardId, startTime) {
         return getImagesMock;
     };
-    MockRepository.prototype.addImage = function (img) {
+    MockRepository.prototype.addImage = function (boardId, img) {
         return;
     };
     return MockRepository;

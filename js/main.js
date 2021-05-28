@@ -5,6 +5,7 @@ var config_1 = require("./config");
 var Fulfiller_1 = require("./fulfiller/Fulfiller");
 var MockRepository_1 = require("./mocks/MockRepository");
 var Repository_1 = require("./repository/Repository");
+var config_2 = require("./config");
 var cors = require("cors");
 var app = express();
 var hostname = '127.0.0.1';
@@ -15,7 +16,7 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json());
-var repo = config_1.useMockResponses ? new MockRepository_1.MockRepository() : new Repository_1.Repository();
+var repo = config_1.useMockResponses ? new MockRepository_1.MockRepository() : new Repository_1.Repository(config_2.boardImageLimit);
 var fulfiller = new Fulfiller_1.RequestFulfiller(repo);
 app.post('/getImages', fulfiller.getImages.bind(fulfiller));
 app.post('/addImage', fulfiller.addImage.bind(fulfiller));

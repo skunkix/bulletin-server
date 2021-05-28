@@ -3,6 +3,7 @@ import { useMockResponses } from './config';
 import { RequestFulfiller } from './fulfiller/Fulfiller';
 import { MockRepository } from './mocks/MockRepository';
 import { Repository } from './repository/Repository';
+import { boardImageLimit } from './config';
 const cors = require("cors");
 
 const app = express();
@@ -21,7 +22,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-const repo = useMockResponses ? new MockRepository() : new Repository();
+const repo = useMockResponses ? new MockRepository() : new Repository(boardImageLimit);
 const fulfiller = new RequestFulfiller(repo);
 
 app.post('/getImages', fulfiller.getImages.bind(fulfiller));

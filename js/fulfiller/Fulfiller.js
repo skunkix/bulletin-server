@@ -19,24 +19,42 @@ var RequestFulfiller = (function () {
         this.date = date;
     }
     RequestFulfiller.prototype.getImages = function (req, res) {
-        var images = this.repo.getImages(0);
-        res.send({
-            images: images,
-            timestamp: this.date.now()
-        });
-    };
-    RequestFulfiller.prototype.addImage = function (req, res) {
-        var body = req.body;
-        if (!typesAllMatch([
-            { a: body.url, b: 'string' },
-            { a: body.width, b: 'number' },
-            { a: body.x, b: 'number' },
-            { a: body.y, b: 'number' },
-        ])) {
+        try {
+            var body = req.body;
+            if (!typesAllMatch([
+                { a: body.boardId, b: 'string' },
+                { a: body.startTimestamp, b: 'number' }
+            ])) {
+                return invalidRequest(res);
+            }
+            var images = this.repo.getImages(body.boardId, body.startTimestamp);
+            res.send({
+                images: images,
+                timestamp: this.date.now()
+            });
+        }
+        catch (err) {
             return invalidRequest(res);
         }
-        this.repo.addImage(__assign(__assign({}, body), { timestamp: this.date.now() }));
-        res.end();
+    };
+    RequestFulfiller.prototype.addImage = function (req, res) {
+        try {
+            var body = req.body;
+            if (!typesAllMatch([
+                { a: body.boardId, b: 'string' },
+                { a: body.url, b: 'string' },
+                { a: body.width, b: 'number' },
+                { a: body.x, b: 'number' },
+                { a: body.y, b: 'number' },
+            ])) {
+                return invalidRequest(res);
+            }
+            this.repo.addImage(body.boardId, __assign(__assign({}, body), { timestamp: this.date.now() }));
+            res.end();
+        }
+        catch (err) {
+            return invalidRequest(res);
+        }
     };
     return RequestFulfiller;
 }());
