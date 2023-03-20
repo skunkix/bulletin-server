@@ -27,6 +27,9 @@ const fulfiller = new RequestFulfiller(repo);
 
 app.post('/getImages', fulfiller.getImages.bind(fulfiller));
 app.post('/addImage', fulfiller.addImage.bind(fulfiller));
+app.get('/health', (req, res) => {
+    res.send('helloooo')
+});
 
 app.listen(port, () => {
   console.log(`Running express at ${hostname}:${port}`);
